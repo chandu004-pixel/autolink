@@ -27,11 +27,12 @@ RUN apt-get update && apt-get install -y \
     libasound2 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy binaries and assets
+# Copy binaries
 COPY --from=builder /app/platform .
 COPY --from=builder /app/bot .
-COPY --from=builder /app/simulated-app/templates ./simulated-app/templates
-COPY --from=builder /app/simulated-app/static ./simulated-app/static
+
+# Copy assets and environment
+COPY --from=builder /app/simulated-app ./simulated-app
 COPY --from=builder /app/.env.example .env
 
 # Expose the platform port
