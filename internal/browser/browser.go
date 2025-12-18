@@ -12,8 +12,15 @@ type Client struct {
 func New(headless bool) (*Client, error) {
 	l := launcher.New().
 		Headless(headless).
-		UserDataDir("./.browser_data"). // Persist sessions/cookies
+		UserDataDir("./.browser_data").
+		Set("no-sandbox").
+		Set("disable-setuid-sandbox").
 		Set("disable-blink-features", "AutomationControlled")
+
+	// If running in Docker, Chromium is usually at /usr/bin/chromium
+	if path, exists := launcher.LookPath(); exists {
+		l.Bin(path)
+	}
 
 	url, err := l.Launch()
 	if err != nil {

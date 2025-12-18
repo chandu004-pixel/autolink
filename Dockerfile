@@ -27,9 +27,11 @@ RUN apt-get update && apt-get install -y \
     libasound2 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy binaries
+# Copy binaries and scripts
 COPY --from=builder /app/platform .
 COPY --from=builder /app/bot .
+COPY --from=builder /app/start.sh .
+RUN chmod +x start.sh
 
 # Copy assets and environment
 COPY --from=builder /app/simulated-app ./simulated-app
@@ -38,5 +40,5 @@ COPY --from=builder /app/.env.example .env
 # Expose the platform port
 EXPOSE 8080
 
-# Default to running the platform
-CMD ["./platform"]
+# Run both services via the start script
+CMD ["./start.sh"]
