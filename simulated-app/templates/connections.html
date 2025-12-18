@@ -1,0 +1,70 @@
+{{define "content"}}
+<div style="margin-bottom: 1.5rem;">
+    <h2 style="font-size: 1.25rem; font-weight: 600; color: var(--text-white); margin-bottom: 0.5rem;">Your Network</h2>
+    <p style="color: var(--text-dim); font-size: 0.9rem;">Manage your professional connections.</p>
+</div>
+
+<div class="card" style="padding: 0; border-radius: 8px; overflow: hidden;">
+    <div id="connection-list" style="display: flex; flex-direction: column;">
+        {{range .}}
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);"
+            class="connection-item">
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <div class="profile-avatar"
+                    style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #6ab04c, #4cd137); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: white;">
+                    {{slice .Name 0 1}}
+                </div>
+                <div>
+                    <h4 style="margin: 0; font-size: 1rem; font-weight: 600;">
+                        <a href="/profile/{{.ID}}" style="color: var(--text-white); text-decoration: none;"
+                            class="profile-link">{{.Name}}</a>
+                    </h4>
+                    <p style="margin: 0.1rem 0; font-size: 0.85rem; color: var(--text-dim);">{{.Title}} at {{.Company}}
+                    </p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 0.75rem;">
+                <button class="btn btn-outline" style="border-radius: 20px; padding: 0.4rem 1.2rem; font-size: 0.85rem;"
+                    onclick="location.href='/messages?id={{.ID}}'">
+                    Message
+                </button>
+                <button class="btn btn-outline"
+                    style="border-radius: 20px; padding: 0.4rem 0.8rem; font-size: 0.85rem; border: none; color: var(--text-dim);">
+                    Manage
+                </button>
+            </div>
+        </div>
+        {{else}}
+        <div style="text-align: center; padding: 4rem 2rem; opacity: 0.6;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
+            <p style="color: var(--text-dim);">You don't have any connections yet.</p>
+            <a href="/search" class="btn"
+                style="margin-top: 1.5rem; border-radius: 20px; background: var(--accent); border: none;">Build your
+                network</a>
+        </div>
+        {{end}}
+    </div>
+</div>
+
+<style>
+    .connection-item:hover {
+        background: var(--bg-card-hover);
+    }
+
+    .profile-link:hover {
+        text-decoration: underline;
+    }
+
+    .btn {
+        transition: filter 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        filter: brightness(1.1);
+    }
+</style>
+{{end}}

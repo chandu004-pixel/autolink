@@ -1,0 +1,659 @@
+{{define "layout"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkSim - Intelligence Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #050608;
+            --bg-main: #0a0b0d;
+            --bg-card: #121418;
+            --bg-card-hover: #1b1e24;
+            --accent: #0084ff;
+            --accent-glow: rgba(0, 132, 255, 0.4);
+            --text-white: #ffffff;
+            --text-dim: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --glass: rgba(18, 20, 24, 0.85);
+            --success: #22c55e;
+            --nav-height: 72px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-card);
+            border-radius: 10px;
+        }
+
+        nav {
+            height: var(--nav-height);
+            background: var(--glass);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 200px 1fr 400px;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-white);
+            text-decoration: none;
+            letter-spacing: -1.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nav-logo span {
+            color: #ffffff;
+            background: #0084ff;
+            padding: 0px 6px;
+            border-radius: 4px;
+            font-weight: 800;
+        }
+
+
+        .search-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-container input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.7rem 1rem 0.7rem 3rem;
+            color: var(--text-white);
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .search-container input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 25px var(--accent-glow);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dim);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-weight: 500;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text-white);
+        }
+
+        .dashboard-grid {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .profile-card {
+            text-align: center;
+            position: sticky;
+            top: 100px;
+        }
+
+        .avatar-glow {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, var(--accent), #7000ff);
+            border-radius: 24px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: 800;
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .profile-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .profile-info p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-stats {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            text-align: left;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+        }
+
+        .stat-value {
+            color: var(--text-white);
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .main-content {
+            min-height: 800px;
+        }
+
+        /* System Logs Styles */
+        .logs-card {
+            position: sticky;
+            top: 100px;
+            padding: 0;
+            background: #000;
+            height: 550px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-color: #1a1a1a;
+        }
+
+        .logs-header {
+            padding: 0.75rem 1.25rem;
+            background: #080808;
+            border-bottom: 1px solid #1a1a1a;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logs-header svg {
+            color: var(--accent);
+        }
+
+        .logs-content {
+            flex: 1;
+            padding: 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #64748b;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Scanning line effect */
+        .logs-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 132, 255, 0.2);
+            box-shadow: 0 0 10px var(--accent);
+            animation: scan 4s linear infinite;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        @keyframes scan {
+            0% {
+                top: 0;
+            }
+
+            100% {
+                top: 100%;
+            }
+        }
+
+        .log-entry {
+            margin-bottom: 0.6rem;
+            border-left: 2px solid transparent;
+            padding-left: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .log-entry:hover {
+            border-left-color: var(--accent);
+            background: rgba(0, 132, 255, 0.03);
+        }
+
+        .log-time {
+            color: #475569;
+            margin-right: 0.6rem;
+        }
+
+        .log-action {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .log-meta {
+            color: #e2e8f0;
+        }
+
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: 1px solid var(--accent);
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background: #0072dd;
+            box-shadow: 0 0 20px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--text-dim);
+            color: var(--text-white);
+        }
+
+        .input-field {
+            background: var(--bg-deep);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.8rem 1.25rem;
+            color: var(--text-white);
+            font-family: inherit;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 0.95rem;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 15px rgba(0, 132, 255, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.6rem;
+            padding-left: 0.25rem;
+        }
+
+        @media (max-width: 1200px) {
+            .nav-container {
+                grid-template-columns: 1fr auto;
+            }
+
+            .search-container {
+                display: none;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-card,
+            .logs-card {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="nav-logo"><span>in</span>bot</a>
+            {{if .Authenticated}}
+            <form action="/search" method="GET" class="search-container">
+                <span class="search-icon">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </span>
+                <input type="text" name="q" id="search-input" placeholder="Search for people, skills, companies..."
+                    value="{{if .Data}}{{.Data.Query}}{{end}}">
+
+            </form>
+            <div class="nav-links">
+                <a href="/" class="nav-link">
+                    <svg fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
+                    </svg>
+                    Home
+                </a>
+                <a href="/messages" class="nav-link">
+                    <svg fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                                </path>
+                            </svg>
+                            DM
+                </a>
+                <a href="/profile/1" class="nav-link">
+                    <svg fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z">
+                        </path>
+                    </svg>
+                    Me
+                </a>
+                <a href="/logout" class="nav-link">
+                    <svg fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z">
+                        </path>
+                    </svg>
+                    Logout
+                </a>
+            </div>
+            {{else}}
+            <div style="text-align: right;"><a href="/login" class="btn">Login System</a></div>
+            {{end}}
+        </div>
+    </nav>
+
+    <div class="dashboard-grid" {{if not .Authenticated}}style="grid-template-columns: 1fr;" {{end}}>
+        {{if .Authenticated}}
+        <!-- Sidebar: Profile Stats -->
+        <aside class="card profile-card">
+            <div id="bot-status"
+                style="position: absolute; top: 1.5rem; right: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.7rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;">
+                <span
+                    style="width: 8px; height: 8px; background: var(--success); border-radius: 50%; display: inline-block; box-shadow: 0 0 10px var(--success); animation: pulse 2s infinite;"></span>
+                Active
+            </div>
+            <div class="avatar-glow">J</div>
+            <div class="profile-info">
+                <h3>John Doe</h3>
+                <p>sysadmin@autolink.internal</p>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Profile views</span>
+                        <span class="stat-value">342</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Connections</span>
+                        <span class="stat-value">1,540</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Requests</span>
+                        <span class="stat-value">{{.SentRequests}}</span>
+                    </div>
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                        <div
+                            style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.6rem;">
+                            <span
+                                style="color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px;">Daily
+                                Quota</span>
+                            <span style="color: var(--accent); font-weight: 700;">{{.SentRequests}} / 20</span>
+                        </div>
+                        <div
+                            style="height: 6px; background: #000; border-radius: 3px; overflow: hidden; border: 1px solid var(--border);">
+                            <div id="daily-progress-bar"
+                                style="height: 100%; background: linear-gradient(90deg, var(--accent), #7000ff); width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 10px var(--accent-glow);">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New: Mission History Section -->
+            <div style="margin-top: 2rem; text-align: left; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                <h4
+                    style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                        </path>
+                    </svg>
+                    Recent Transmissions
+                </h4>
+                <div id="recent-messages" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <!-- Populated via JS -->
+                    <div style="font-size: 0.75rem; color: #475569; font-style: italic;">Monitoring outgoing packets...
+                    </div>
+                </div>
+            </div>
+        </aside>
+        {{end}}
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            {{template "content" .Data}}
+        </main>
+
+        {{if .Authenticated}}
+        <!-- Sidebar: System Logs -->
+        <aside class="card logs-card">
+            <div class="logs-header">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                Real-time Intelligence
+            </div>
+            <div class="logs-content" id="system-logs">
+                <div class="log-entry">
+                    <span class="log-time">[Init]</span>
+                    <span class="log-action">Protocol</span>
+                    <span class="log-meta">Handshake complete...</span>
+                </div>
+            </div>
+            <div
+                style="padding: 1rem; border-top: 1px solid #1a1a1a; font-size: 0.65rem; color: #475569; text-align: center; background: #080808; letter-spacing: 0.5px;">
+                AUTOLINK PROTOCOL v1.2.4<br>ENCRYPTED CONNECTION ACTIVE
+            </div>
+        </aside>
+        {{end}}
+    </div>
+
+    <script>
+        function updateProgressBar() {
+            const count = parseInt("{{.TodaysProgress}}") || 0;
+            const progress = Math.min((count / 20) * 100, 100);
+            const bar = document.getElementById('daily-progress-bar');
+            if (bar) {
+                bar.style.width = progress + '%';
+            }
+        }
+
+        function fetchLogs() {
+            fetch('/api/logs')
+                .then(r => r.json())
+                .then(logs => {
+                    const container = document.getElementById('system-logs');
+                    if (!container) return;
+
+                    const newHtml = logs.map(msg => `
+                        <div class="log-entry">
+                            <span class="log-time">[${msg.time}]</span>
+                            <span class="log-action">${msg.action}</span>
+                            <span class="log-meta">${msg.metadata}</span>
+                        </div>
+                    `).join('');
+
+                    if (container.innerHTML !== newHtml) {
+                        container.innerHTML = newHtml;
+                    }
+                })
+                .catch(err => console.error("Log fetch failed", err));
+        }
+
+        function fetchSentMessages() {
+            fetch('/api/messages')
+                .then(r => r.json())
+                .then(msgs => {
+                    const container = document.getElementById('recent-messages');
+                    if (!container || !msgs) return;
+
+                    const newHtml = msgs.slice(0, 4).map(m => `
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem; position: relative; overflow: hidden;">
+                            <div style="font-size: 0.7rem; color: var(--accent); font-weight: 700; margin-bottom: 0.2rem; display: flex; justify-content: space-between;">
+                                <span>TYPE: ${m.type}</span>
+                                <span style="color: #475569">${m.time}</span>
+                            </div>
+                            <div style="font-size: 0.75rem; color: #e2e8f0; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                ${m.content}
+                            </div>
+                            <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--accent); opacity: 0.3;"></div>
+                        </div>
+                    `).join('');
+
+                    if (container.innerHTML !== newHtml) {
+                        container.innerHTML = newHtml || '<div style="font-size: 0.75rem; color: #475569; font-style: italic;">No packets dispatched.</div>';
+                    }
+                })
+                .catch(err => console.error("Message history fetch failed", err));
+        }
+
+        window.addEventListener('load', () => {
+            updateProgressBar();
+            fetchLogs();
+            fetchSentMessages();
+            setInterval(() => {
+                fetchLogs();
+                fetchSentMessages();
+            }, 3000);
+
+            // ... rest of scripts
+
+            // Highlight active nav link
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.nav-link').forEach(link => {
+                const href = link.getAttribute('href');
+                if ((href === '/' && currentPath === '/') || (href !== '/' && currentPath.startsWith(href))) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
+{{end}}

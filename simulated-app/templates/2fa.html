@@ -1,0 +1,58 @@
+{{define "content"}}
+<div style="max-width: 480px; margin: 5rem auto; perspective: 1000px;">
+    <div class="card" style="padding: 3rem; border-color: var(--accent); position: relative; overflow: hidden;">
+        <!-- Logic pattern -->
+        <div
+            style="position: absolute; top: 0; right: 0; padding: 1rem; opacity: 0.05; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; pointer-events: none; line-height: 1;">
+            01011010 11001010<br>10101011 01110101<br>11000011 10101100
+        </div>
+
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <div
+                style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; background: rgba(0, 132, 255, 0.1); border-radius: 16px; margin-bottom: 1.5rem; color: var(--accent);">
+                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                    </path>
+                </svg>
+            </div>
+            <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -1px;">Sequence
+                Validation</h2>
+            <p style="color: var(--text-dim); font-size: 0.95rem;">Resolve the decryption task to confirm clearance.</p>
+        </div>
+
+        <div
+            style="background: #000; border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem; margin-bottom: 2rem; text-align: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);">
+            <div
+                style="color: var(--text-dim); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 1.25rem; font-weight: 700;">
+                Challenge Sequence</div>
+            <div style="font-size: 2.5rem; font-weight: 800; color: var(--accent); font-family: 'JetBrains Mono', monospace; text-shadow: 0 0 15px var(--accent-glow);"
+                id="puzzle-text">
+                {{.Puzzle}}
+            </div>
+        </div>
+
+        {{if .Error}}
+        <div
+            style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; padding: 1rem; border-radius: 12px; margin-bottom: 2rem; font-size: 0.85rem; text-align: center; font-weight: 600;">
+            {{.Error}}
+        </div>
+        {{end}}
+
+        <form action="/2fa" method="POST">
+            <div class="input-group">
+                <label class="input-label" for="otp-field">Validation Response</label>
+                <input type="text" name="code" class="input-field" placeholder="Entry code..." id="otp-field" required
+                    autocomplete="off" autofocus>
+            </div>
+            <button type="submit" class="btn" id="otp-submit"
+                style="width: 100%; margin-top: 1rem; padding: 1rem; font-size: 1rem;">
+                Confirm Sequence
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M5 13l4 4L19 7"></path>
+                </svg>
+            </button>
+        </form>
+    </div>
+</div>
+{{end}}

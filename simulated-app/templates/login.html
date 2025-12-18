@@ -1,0 +1,58 @@
+{{define "content"}}
+<div style="max-width: 480px; margin: 5rem auto; perspective: 1000px;">
+    <div class="card" style="padding: 3rem; position: relative; overflow: hidden; border-color: var(--accent);">
+        <!-- Subtle glow -->
+        <div
+            style="position: absolute; top: -100px; left: -100px; width: 300px; height: 300px; background: var(--accent); filter: blur(120px); opacity: 0.1; pointer-events: none;">
+        </div>
+
+        <div style="text-align: center; margin-bottom: 2.5rem; position: relative; z-index: 1;">
+            <div
+                style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; background: rgba(0, 132, 255, 0.1); border-radius: 16px; margin-bottom: 1.5rem; color: var(--accent);">
+                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path
+                        d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-4.94-1.428a3 3 0 110-6c1.378 0 2.613.466 3.587 1.25m3.587-1.25c.343-.277.712-.524 1.104-.741m0 0a3 3 0 110-6c1.378 0 2.613.466 3.587 1.25m3.587-1.25V5a2 2 0 00-2-2h-3.587m0 0A4.453 4.453 0 0110 3c-2.457 0-4.453 1.996-4.453 4.453 0 2.457 1.996 4.453 4.453 4.453a4.453 4.453 0 004.453-4.453">
+                    </path>
+                </svg>
+            </div>
+            <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -1px;">Identity
+                Verification</h2>
+            <p style="color: var(--text-dim); font-size: 0.95rem;">Enter credentials to initialize protocol access.</p>
+        </div>
+
+        {{if .Error}}
+        <div
+            style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; padding: 1rem; border-radius: 12px; margin-bottom: 2rem; font-size: 0.85rem; text-align: center; font-weight: 600;">
+            {{.Error}}
+        </div>
+        {{end}}
+
+        <form action="/login" method="POST">
+            <div class="input-group">
+                <label class="input-label" for="username-field">Identity Code</label>
+                <input type="text" name="username" class="input-field" placeholder="admin" id="username-field" required
+                    autofocus>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" for="password-field">Access Key</label>
+                <input type="password" name="password" class="input-field" placeholder="••••••••" id="password-field"
+                    required>
+            </div>
+
+            <button type="submit" class="btn" id="login-submit"
+                style="width: 100%; margin-top: 1rem; padding: 1rem; font-size: 1rem;">
+                Authenticate
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </button>
+        </form>
+
+        <div
+            style="margin-top: 3rem; text-align: center; font-size: 0.75rem; color: #475569; letter-spacing: 0.5px; text-transform: uppercase;">
+            SECURE SIMULATION ENVIRONMENT v1.2<br>BUILT WITH GOLANG & ROD
+        </div>
+    </div>
+</div>
+{{end}}

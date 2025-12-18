@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  platform:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./autolink.db:/app/autolink.db
+    environment:
+      - PORT=8080
+    restart: always
+
+  bot:
+    build: .
+    command: [ "./bot" ]
+    depends_on:
+      - platform
+    volumes:
+      - ./autolink.db:/app/autolink.db
+    environment:
+      - APP_URL=http://platform:8080
+      - HEADLESS=true
+    restart: always

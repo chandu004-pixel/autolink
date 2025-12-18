@@ -1,0 +1,30 @@
+{"level":"info","ts":"2025-12-18T22:29:06.121+0530","caller":"bot/main.go:54","msg":"Starting Autolink Bot PoC..."}
+{"level":"info","ts":"2025-12-18T22:29:06.489+0530","caller":"auth/auth.go:24","msg":"Attempting login for user: admin"}
+{"level":"info","ts":"2025-12-18T22:29:07.497+0530","caller":"auth/auth.go:86","msg":"Waiting for page load..."}
+{"level":"info","ts":"2025-12-18T22:29:08.501+0530","caller":"auth/auth.go:106","msg":"Current URL after login attempt: http://localhost:8080/2fa"}
+{"level":"info","ts":"2025-12-18T22:29:08.501+0530","caller":"auth/auth.go:110","msg":"Security checkpoint (2FA) detected, solving autonomously..."}
+{"level":"info","ts":"2025-12-18T22:29:08.504+0530","caller":"auth/auth.go:117","msg":"Puzzle: 5 - 2"}
+{"level":"info","ts":"2025-12-18T22:29:08.504+0530","caller":"auth/auth.go:123","msg":"Solution calculated: 3"}
+{"level":"info","ts":"2025-12-18T22:29:08.504+0530","caller":"auth/auth.go:125","msg":"Typing 2FA solution..."}
+{"level":"info","ts":"2025-12-18T22:29:08.644+0530","caller":"auth/auth.go:130","msg":"Typing 2FA solution complete."}
+{"level":"info","ts":"2025-12-18T22:29:09.584+0530","caller":"auth/auth.go:134","msg":"Looking for 2FA submit button..."}
+{"level":"info","ts":"2025-12-18T22:29:09.587+0530","caller":"auth/auth.go:140","msg":"Clicking 2FA submit button..."}
+{"level":"info","ts":"2025-12-18T22:29:09.637+0530","caller":"auth/auth.go:148","msg":"Waiting for navigation completion..."}
+{"level":"info","ts":"2025-12-18T22:29:10.474+0530","caller":"auth/auth.go:151","msg":"Navigation complete after 2FA."}
+{"level":"info","ts":"2025-12-18T22:29:11.474+0530","caller":"auth/auth.go:155","msg":"Checking for 2FA error messages..."}
+{"level":"info","ts":"2025-12-18T22:29:11.478+0530","caller":"auth/auth.go:168","msg":"Final URL: http://localhost:8080/"}
+{"level":"info","ts":"2025-12-18T22:29:11.478+0530","caller":"auth/auth.go:175","msg":"Authentication successful"}
+{"level":"info","ts":"2025-12-18T22:29:11.478+0530","caller":"search/search.go:29","msg":"Searching for: Software Engineer"}
+{"level":"info","ts":"2025-12-18T22:29:14.768+0530","caller":"search/search.go:73","msg":"Found 1 results"}
+{"level":"info","ts":"2025-12-18T22:29:14.768+0530","caller":"connect/connect.go:23","msg":"Attempting to connect with Alice Smith (ID: 1)"}
+{"level":"info","ts":"2025-12-18T22:29:17.330+0530","caller":"connect/connect.go:40","msg":"Looking for connect button..."}
+{"level":"info","ts":"2025-12-18T22:41:40.070+0530","caller":"connect/connect.go:47","msg":"Clicking connect button to open modal..."}
+{"level":"info","ts":"2025-12-18T22:41:40.201+0530","caller":"connect/connect.go:52","msg":"Connect button clicked."}
+{"level":"info","ts":"2025-12-18T22:41:41.588+0530","caller":"connect/connect.go:57","msg":"Typing personalized note..."}
+{"level":"info","ts":"2025-12-18T22:41:49.270+0530","caller":"connect/connect.go:63","msg":"Note typing complete."}
+{"level":"info","ts":"2025-12-18T22:41:51.018+0530","caller":"connect/connect.go:66","msg":"Clicking send note button..."}
+{"level":"info","ts":"2025-12-18T22:41:51.061+0530","caller":"connect/connect.go:71","msg":"Send button clicked."}
+{"level":"info","ts":"2025-12-18T22:41:51.064+0530","caller":"connect/connect.go:79","msg":"Successfully sent connection request to Alice Smith"}
+{"level":"info","ts":"2025-12-18T22:41:51.064+0530","caller":"bot/main.go:84","msg":"Cooling down for 60 seconds..."}
+{"level":"info","ts":"2025-12-18T22:42:51.066+0530","caller":"bot/main.go:88","msg":"Automation flow completed."}
+{"level":"info","ts":"2025-12-18T23:07:20.094+0530","caller":"bot/main.go:92","msg":"Shutting down..."}

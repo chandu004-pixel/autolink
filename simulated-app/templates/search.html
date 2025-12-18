@@ -1,0 +1,172 @@
+{{define "content"}}
+<div style="margin-bottom: 1.5rem;">
+    <h2 style="font-size: 1.25rem; font-weight: 600; color: var(--text-white); margin-bottom: 0.5rem;">Search Results
+    </h2>
+    <p style="color: var(--text-dim); font-size: 0.9rem;">
+        {{if .Query}}Showing results for <span
+            style="color: var(--text-white); font-weight: 600;">"{{.Query}}"</span>{{else}}Discover people you may
+        know{{end}}
+    </p>
+</div>
+
+<div id="search-results" style="display: flex; flex-direction: column; gap: 0.5rem;">
+    {{range .Results}}
+    <div class="card result-item" data-id="{{.ID}}" style="padding: 1rem; border-radius: 8px;">
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+            <div class="avatar-container" style="flex-shrink: 0;">
+                <div class="profile-avatar"
+                    style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #7000ff); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; color: white;">
+                    {{slice .Name 0 1}}
+                </div>
+            </div>
+            <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 1rem; font-weight: 600;">
+                            <a href="/profile/{{.ID}}" style="color: var(--text-white); text-decoration: none;"
+                                class="profile-link">{{.Name}}</a>
+                            <span style="color: var(--text-dim); font-size: 0.85rem; font-weight: 400;"> • 1st</span>
+                        </h3>
+                        <p style="margin: 0.1rem 0; font-size: 0.85rem; color: var(--text-white);">{{.Title}} at
+                            {{.Company}}</p>
+                        <p style="margin: 0.1rem 0; font-size: 0.8rem; color: var(--text-dim);">{{.Location}}</p>
+                    </div>
+                    <div style="flex-shrink: 0;">
+                        {{if .Connected}}
+                        <button class="btn btn-outline"
+                            style="border-radius: 20px; padding: 0.4rem 1rem; font-size: 0.85rem; display: flex; align-items: center; gap: 0.3rem;"
+                            onclick="location.href='/messages?id={{.ID}}'">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+                            </svg>
+                            Message
+                        </button>
+                        {{else}}
+                        <button class="btn connect-btn" data-id="{{.ID}}"
+                            style="border-radius: 20px; padding: 0.4rem 1.2rem; font-size: 0.85rem; background: transparent; border: 1px solid var(--accent); color: var(--accent); font-weight: 600;">
+                            Connect
+                        </button>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{else}}
+    <div class="card"
+        style="text-align: center; padding: 4rem 2rem; border-style: dashed; border-width: 1px; opacity: 0.6;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+        <h3 style="color: var(--text-white); font-weight: 600; font-size: 1.2rem;">No results found</h3>
+        <p style="color: var(--text-dim); font-size: 0.9rem; margin-top: 0.5rem;">Try adjusting your search criteria.
+        </p>
+    </div>
+    {{end}}
+</div>
+
+<!-- Modal remains mostly the same but matches profile style -->
+<div id="note-modal"
+    style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+    <div class="card"
+        style="max-width: 550px; width: 95%; padding: 2rem; border-radius: 12px; background: var(--bg-card);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h3 style="font-size: 1.25rem; color: var(--text-white); font-weight: 600;">Add a note to your invitation
+            </h3>
+            <button id="close-modal"
+                style="background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 1.5rem;">&times;</button>
+        </div>
+        <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1.5rem;">
+            LinkedIn members are more likely to accept invitations that include a personal note.
+        </p>
+
+        <textarea id="note-text" class="input-field"
+            style="width: 100%; height: 150px; resize: none; margin-bottom: 1.5rem; background: var(--bg-deep); border-radius: 8px; padding: 1rem;"
+            placeholder="Ex: Hi there, I noticed we're both in the same industry..."></textarea>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+            <button id="cancel-note" class="btn btn-outline" style="border-radius: 20px;">Send without a note</button>
+            <button id="send-note" class="btn"
+                style="border-radius: 20px; background: var(--accent); border: none;">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentId = null;
+    const noteModal = document.getElementById('note-modal');
+
+    document.querySelectorAll('.connect-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentId = btn.dataset.id;
+            noteModal.style.display = 'flex';
+            document.getElementById('note-text').focus();
+        });
+    });
+
+    document.getElementById('close-modal').addEventListener('click', () => {
+        noteModal.style.display = 'none';
+        currentId = null;
+    });
+
+    document.getElementById('cancel-note').addEventListener('click', () => {
+        sendRequest('');
+    });
+
+    document.getElementById('send-note').addEventListener('click', () => {
+        const note = document.getElementById('note-text').value;
+        sendRequest(note);
+    });
+
+    function sendRequest(note) {
+        if (!currentId) return;
+        const btn = document.querySelector(`.connect-btn[data-id="${currentId}"]`);
+        const sendBtn = document.getElementById('send-note');
+        sendBtn.innerHTML = 'Sending...';
+        sendBtn.disabled = true;
+
+        fetch('/api/connect?id=' + currentId, {
+            method: 'POST',
+            body: new URLSearchParams({ 'note': note })
+        })
+            .then(r => {
+                if (r.ok) {
+                    noteModal.style.display = 'none';
+                    location.reload();
+                }
+            })
+            .catch(() => {
+                sendBtn.innerHTML = 'Send';
+                sendBtn.disabled = false;
+            });
+    }
+
+    noteModal.addEventListener('click', (e) => {
+        if (e.target.id === 'note-modal') noteModal.style.display = 'none';
+    });
+</script>
+
+<style>
+    .result-item {
+        transition: background 0.2s;
+    }
+
+    .result-item:hover {
+        background: var(--bg-card-hover);
+    }
+
+    .profile-link:hover {
+        text-decoration: underline;
+    }
+
+    .btn {
+        transition: filter 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        filter: brightness(1.1);
+    }
+</style>
+{{end}}
