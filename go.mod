@@ -1,10 +1,9 @@
 module github.com/user/autolink
 
-go 1.25.5
+go 1.22
 
 require (
 	github.com/go-rod/rod v0.116.2
-	github.com/go-rod/stealth v0.4.9
 	github.com/joho/godotenv v1.5.1
 	github.com/mattn/go-sqlite3 v1.14.32
 	go.uber.org/zap v1.27.1

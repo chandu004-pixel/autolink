@@ -1,5 +1,5 @@
 # Build Stage
-FROM golang:1.22-bookworm AS builder
+FROM golang:1.23-bookworm AS builder
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
